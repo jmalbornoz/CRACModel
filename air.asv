@@ -1,0 +1,23 @@
+%%
+%% density and specific heat capacity of dry air
+%%
+%% Jose Albornoz
+%% Fujitsu Laboratories of Europe
+%% November 2011
+%%
+clear all
+close all
+
+load -ascii 'air_properties.dat'
+
+T = air_properties(:,1);
+rho = air_properties(:,2);
+c = air_properties(:,3);
+
+rho_exp = 287.058*
+
+figure(1)
+plot(T,rho,'o')
+grid
+xlabel('Temperature, Celsius')
+ylabel('Density, g/m^3')

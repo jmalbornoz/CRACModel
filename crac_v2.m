@@ -1,0 +1,101 @@
+%%
+%% crac_v2.m
+%%
+%% This file uses the CRAC model defined in crac_model_v1.m
+%% Inputs to the model:
+%%   * Q: amount of heat to be removed
+%%   * Ts: air supply temperature
+%%   * Tr: air return temperature
+%%   * P: atmospheric pressure
+%%   * phi: relative humidity
+%%   * Pmax: maximum power consumed by the CRAC fans
+%%   * fmax: maximum airflow delivered by the CRAC fans
+%%   * e: cooling coil efficiency
+%%
+%% Jose Albornoz
+%% Fujitsu Laboratories of Europe
+%% November 2011
+%%
+clear all
+close all
+
+% amount of heat to be removed, Watts
+Q = 34.7e3;
+
+% air supply temperature, Celsius
+Ts = 20.00;
+
+% air return temperature, Celsius
+Tr = 30;
+
+% atmospheric pressure, Pascals
+P = 101325;
+
+% relative humidity
+phi = 0.5;
+
+% maximum power consumed by CRAC fans, W
+Pmax = 3.05e3;
+
+% maximum airflow delivered by the CRAC fans, m^3/s
+fmax = 2.7;
+
+% cooling coil efficiency
+e_coil = 0.9;
+
+% fan efficency
+e_fan = 0.8;
+
+%%
+%% Variation of fan power consumption with changing humidity
+%%
+
+%relative humidity
+phi = linspace(0.4,0.60);
+
+% fan power draw, W
+[Pcons f] = crac_model_v1(Q, Ts, Tr, P, phi, Pmax, fmax, e_coil, e_fan);
+
+figure(1)
+plot(phi,Pcons/1e3)
+grid
+xlabel('Relative humidity')
+ylabel('Power draw (kW)')
+title('Fan power draw as a function of relative humidity')
+axis([0 ])
+
+figure(2)
+plot(phi,f)
+grid
+xlabel('Relative humidity')
+ylabel('Airflow (m^3/s)')
+title('Required airflow as a function of relative humidity')
+
+%%
+%% Variation of fan power consumption with changing temperature
+%%
+
+%relative humidity
+phi = 0.45;
+
+% air supply and return temperatures, Celsius
+Ts = linspace(18,27);
+Tr = linspace(33,42);
+
+% fan power draw, W
+[Pcons f] = crac_model_v1(Q, Ts, Tr, P, phi, Pmax, fmax, e_coil, e_fan);
+
+figure(3)
+plot(Ts,Pcons/1e3)
+grid
+xlabel('Air supply temperature, Celsius')
+ylabel('Power draw (kW)')
+title('CRAC power draw as a function of supply temperature')
+
+figure(4)
+plot(Ts,f)
+grid
+xlabel('Air supply temperature')
+ylabel('Airflow (m^3/s)')
+title('Required airflow as a function of supply temperature')
+
